@@ -117,7 +117,7 @@ open class SpinWheelControl: UIControl {
     @objc static let kMinDistanceFromCenter: CGFloat = 30.0
     @objc static let kMaxVelocity: Velocity = 20
     @objc static let kDecelerationVelocityMultiplier: CGFloat = 0.98 //The deceleration multiplier is not to be set past 0.99 in order to avoid issues
-    @objc static let kSpeedToSnap: CGFloat = 5
+    @objc static let kSpeedToSnap: CGFloat = 4
     @objc static let kSnapRadiansProximity: Radians = 0.001
     @objc static let kWedgeSnapVelocityMultiplier: CGFloat = 10.0
     @objc static let kZoomZoneThreshold = 1.5
@@ -158,6 +158,7 @@ open class SpinWheelControl: UIControl {
     
     //MARK: Computed Properties
     @objc var spinWheelCenter: CGPoint {
+        
         return convert(center, from: superview)
     }
     
@@ -186,6 +187,7 @@ open class SpinWheelControl: UIControl {
     
     //The velocity of the spinwheel
     @objc var velocity: Velocity {
+        
         var computedVelocity: Velocity = 0
         
         //If the wheel was actually spun, calculate the new velocity
@@ -291,7 +293,6 @@ open class SpinWheelControl: UIControl {
             
             //Wedge label
             wedge.label.configureWedgeLabel(index: wedgeNumber, width: radius * 0.9, position: spinWheelCenter, orientation: self.wedgeLabelOrientationIndex, radiansPerWedge: radiansPerWedge)
-            
             wedge.addSubview(wedge.label)
             
             //Add the shape and label to the spinWheelView
@@ -387,6 +388,9 @@ open class SpinWheelControl: UIControl {
     
     //After user has lifted their finger from dragging, begin the deceleration
     func beginDeceleration(withVelocity customVelocity: Velocity? = nil) {
+        print("ahhh")
+        print("beginDeceleration: \(String(describing: customVelocity))")
+        
         if let customVelocity = customVelocity, customVelocity <= SpinWheelControl.kMaxVelocity {
             currentDecelerationVelocity = customVelocity
         } else {
@@ -419,6 +423,7 @@ open class SpinWheelControl: UIControl {
     @objc func decelerationStep() {
         let newVelocity: Velocity = currentDecelerationVelocity * SpinWheelControl.kDecelerationVelocityMultiplier
         let radiansToRotate: Radians = currentDecelerationVelocity / CGFloat(SpinWheelControl.kPreferredFramesPerSecond)
+        print("new velocity: \(newVelocity)")
         
         //If the spinwheel has slowed down to under the minimum speed, end the deceleration
         if newVelocity <= SpinWheelControl.kSpeedToSnap &&
@@ -445,10 +450,12 @@ open class SpinWheelControl: UIControl {
     @objc func snapToNearestWedge() {
         currentStatus = .snapping
         
-        let sumRadians = ((currentRadians + (radiansPerWedge / 2)) + snappingPositionRadians)
-        let nearestWedge: Int = Int(round(sumRadians / radiansPerWedge))
+        //        let nearestWedge: Int = Int(round(((currentRadians + (radiansPerWedge / 2)) + snappingPositionRadians) / radiansPerWedge))
+        let firstParam = ((currentRadians + (radiansPerWedge / 2)) + snappingPositionRadians)
+        let rounded = round(firstParam / radiansPerWedge )
+        let nearestWedgeInt = Int(rounded)
         
-        selectWedgeAtIndexOffset(index: nearestWedge, animated: true)
+        selectWedgeAtIndexOffset(index: nearestWedgeInt, animated: true)
     }
     
     

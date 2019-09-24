@@ -117,7 +117,7 @@ open class SpinWheelControl: UIControl {
     @objc static let kMinDistanceFromCenter: CGFloat = 30.0
     @objc static let kMaxVelocity: Velocity = 20
     @objc static let kDecelerationVelocityMultiplier: CGFloat = 0.98 //The deceleration multiplier is not to be set past 0.99 in order to avoid issues
-    @objc static let kSpeedToSnap: CGFloat = 4
+    @objc static let kSpeedToSnap: CGFloat = 0.2
     @objc static let kSnapRadiansProximity: Radians = 0.001
     @objc static let kWedgeSnapVelocityMultiplier: CGFloat = 10.0
     @objc static let kZoomZoneThreshold = 1.5
@@ -410,7 +410,7 @@ open class SpinWheelControl: UIControl {
                 // TODO: Fallback on earlier versions
                 decelerationDisplayLink?.preferredFramesPerSecond = SpinWheelControl.kPreferredFramesPerSecond
             }
-            decelerationDisplayLink?.add(to: RunLoop.main, forMode: RunLoopMode.commonModes)
+            decelerationDisplayLink?.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
         }
             //Else snap to the nearest wedge.  No deceleration necessary.
         else {
@@ -527,7 +527,7 @@ open class SpinWheelControl: UIControl {
             // TODO: Fallback on earlier versions
             snapDisplayLink?.preferredFramesPerSecond = SpinWheelControl.kPreferredFramesPerSecond
         }
-        snapDisplayLink?.add(to: RunLoop.main, forMode: RunLoopMode.commonModes)
+        snapDisplayLink?.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
     }
     
     

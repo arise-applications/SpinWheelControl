@@ -117,7 +117,7 @@ open class SpinWheelControl: UIControl {
     @objc static let kMinDistanceFromCenter: CGFloat = 30.0
     @objc static let kMaxVelocity: Velocity = 20
     @objc static let kDecelerationVelocityMultiplier: CGFloat = 0.98 //The deceleration multiplier is not to be set past 0.99 in order to avoid issues
-    @objc static let kSpeedToSnap: CGFloat = 0.1
+    @objc static let kSpeedToSnap: CGFloat = 5
     @objc static let kSnapRadiansProximity: Radians = 0.001
     @objc static let kWedgeSnapVelocityMultiplier: CGFloat = 10.0
     @objc static let kZoomZoneThreshold = 1.5
